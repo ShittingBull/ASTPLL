@@ -14,15 +14,10 @@ classdef PLLClass < audioPlugin & matlab.System
         fs = 0;  
         BiQu;
         xd = 0;
-        %yc = zeros(128);
         yc = 0;
         xdLp = 0;
-        %fOsc = zeros(128);
         fOsc = 0;
-        %phasecounter = zeros(128);
         phasecounter = 0;
-        readIndex = 1;
-        first = 0;
     end
     
     properties (Constant)
@@ -97,11 +92,7 @@ classdef PLLClass < audioPlugin & matlab.System
             %temp = zeros(samples,1);
             %plugin.xdLp = step(plugin.BiQu,in');
             %fvtool(plugin.BiQu);
-                for i = 1: samples
-                    if plugin.first== 0
-                        plugin.first = 1;
-                        continue;
-                    end
+                for i = 1: samples                
                     plugin.xd = in(i,1) * plugin.yc * plugin.Kd;
                     %xd_(i) = plugin.xd;
                     %applyFiltering(plugin);
