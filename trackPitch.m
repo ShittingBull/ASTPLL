@@ -6,7 +6,7 @@ function [pitch] = trackPitch(x, bufferSize, fCenter, Kd, Fs, resetFlag)
 %#codegen
 pitch = zeros(bufferSize,8);
 persistent pllTracker1 pllTracker2 pllTracker3 pllTracker4 pllTracker5 pllTracker6 pllTracker7 pllTracker8;
-persistent envDet1 envDet2 envDet3 envDet4 envDet5 envDet6 envDet7 envDet8;
+persistent envDet1 envDet2 envDet3 envDet4 envDet5 envDet6 envDet7 envDet8 ;
 if isempty(pllTracker1)
 
            pllTracker1 = PLLClass(fCenter(1),Kd(1),Fs);
@@ -33,7 +33,7 @@ if isempty(pllTracker1)
            pllTracker8 = PLLClass(fCenter(8),Kd(8),Fs);
            setSampleRate(pllTracker8,Fs);
            envDet8 = EnvDetector;
-           
+           flatEnvThresh = 10^(-50/20);
  
     end
 
@@ -57,8 +57,7 @@ if ~isempty(pllTracker1)
     
             pllTracker1.fCenter = fCenter(1);
             pllTracker1.Kd    = Kd(1);
-            env = envDet1(x);
-            x = x ./ env;
+            x = step(envDet1,x);     
             pitch(:,1) = step(pllTracker1,x); 
              
             pllTracker2.fCenter = fCenter(2);

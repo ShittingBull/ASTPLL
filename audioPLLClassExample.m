@@ -30,14 +30,14 @@ end
 if nargin == 1
     usemex = false; % Do not generate code.
 end
-
+displayDownSampleFactor = 50;
 screen = get(0,'ScreenSize');
 outerSize = min((screen(4)-40)/2, 512);
     
 % Create scopes only if plotResults is true
-if showVisual                         
-    scope = dsp.TimeScope('TimeSpan',.1,'YLimits',[0,1400],...
-        'SampleRate',44100,'LayoutDimensions',[1 1],...
+if showVisual     
+    scope = dsp.TimeScope('TimeSpan',2,'YLimits',[0,1400],...
+        'SampleRate',44100/displayDownSampleFactor,'LayoutDimensions',[1 1],...
         'NumInputPorts',1,'TimeSpanOverrunAction','Scroll');
     scope.ActiveDisplay = 1;
     scope.Title = 'Pitch';
@@ -103,6 +103,7 @@ while(numTSteps>=0)
     else
         [x,pitch,pauseSim, stopSim,resetSim] = HelperPLLClassSim_mex(in, reader.SampleRate, reader.SamplesPerFrame);
     end
+    x = downsample(x,displayDownSampleFactor);
     if resetSim
        reset(reader);
     end

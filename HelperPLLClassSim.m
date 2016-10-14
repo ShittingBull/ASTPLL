@@ -21,7 +21,7 @@ if isempty(player)
    startFreq = 80.06;
    fCenter = zeros(1,8);
    Kd = zeros(1,8);
-   for i = 1 : 2
+   for i = 1 : 4
     fCenter((i - 1) * 2 + 1) = startFreq * 2^(((1200 * (i-1)))/1200);
     fCenter((i - 1) * 2 + 2) = startFreq * 2^(((1200 * i))/1200);
     Kd((i - 1) * 2 + 1) = 290 * i; 

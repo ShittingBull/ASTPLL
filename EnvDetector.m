@@ -6,6 +6,10 @@ classdef EnvDetector < audioPlugin & matlab.System
     y = 0;    
     state = 0;  
     state2 = 0;
+    
+    end
+    properties (Constant)
+        flatEnvThresh = 10 ^(-50/20);
     end
     
     methods  (Access = protected)
@@ -13,6 +17,8 @@ classdef EnvDetector < audioPlugin & matlab.System
            
             [samples, channels] = size(in);
             out = zeros(samples,1);
+            env = zeros(samples,1);
+            tmp = zeros(samples,1);
             persistent fs tauAttack tauRelease
             fs = 44100;
             tauAttack = 0.05;
@@ -32,7 +38,7 @@ classdef EnvDetector < audioPlugin & matlab.System
                 else
                     plugin.state =alphaRel * plugin.state + (1-alphaRel) *in(i);
                 end
-                in(i) = plugin.state;
+                tmp(i) = plugin.state;
             end
             
 
@@ -45,8 +51,15 @@ classdef EnvDetector < audioPlugin & matlab.System
            
             
             for i=1:samples
-                plugin.state2 = alphaAtt * plugin.state2 + (1-alphaAtt) * in(i);
-                out(i) = plugin.state2;
+                plugin.state2 = alphaAtt * plugin.state2 + (1-alphaAtt) * tmp(i);
+                env(i) = plugin.state2;
+                if in(i) > plugin.flatEnvThresh
+                    out(i) = (1 / env(i)) * in(i);  
+                else 
+                    out(i) = in(i);
+                end
+                
+                
             end
             
         end
