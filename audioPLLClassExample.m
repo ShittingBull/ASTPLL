@@ -36,7 +36,7 @@ outerSize = min((screen(4)-40)/2, 512);
     
 % Create scopes only if plotResults is true
 if showVisual     
-    scope = dsp.TimeScope('TimeSpan',2,'YLimits',[0,1400],...
+    scope = dsp.TimeScope('TimeSpan',.2,'YLimits',[0,1400],...
         'SampleRate',44100/displayDownSampleFactor,'LayoutDimensions',[1 1],...
         'NumInputPorts',1,'TimeSpanOverrunAction','Scroll');
     scope.ActiveDisplay = 1;
@@ -62,11 +62,12 @@ stopPlayer = 0;
 startFreq = 80.06;
 freqsPll = zeros(1,8);
 Kd = zeros(1,8);
+
 for i= 1:4
-         freqsPll((i - 1) * 2 + 2) = startFreq * 2^(((1200 * i) + 100)/1200);
          freqsPll((i - 1) * 2 + 1) = startFreq * 2^(((1200 * (i-1))- 100)/1200);
+         freqsPll((i - 1) * 2 + 2) = startFreq * 2^(((1200 * i) + 100)/1200);
          Kd((i - 1) * 2 + 1) = 290 * i; 
-         Kd((i - 1) * 2 + 2) = 290 * i;
+         Kd(i * 2) = 290 * i;
 end
 % Define parameters to be tuned
 param = struct([]);
