@@ -56,7 +56,7 @@ classdef PLLClass < audioPlugin & matlab.System
           end
           function plugin = PLLClass(varargin)
             
-            K = tan(pi * 23 / 44100);
+            K = tan(pi * 23 / (44100/4));
             param = 1/3;
             N =  K*K*param + K + param;
             a1 = (2*param*(K*K-1)) / N;

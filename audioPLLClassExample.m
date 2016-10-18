@@ -30,7 +30,9 @@ end
 if nargin == 1
     usemex = false; % Do not generate code.
 end
-displayDownSampleFactor = 50;
+
+downSampleFactor = 4;
+displayDownSampleFactor = 15;
 screen = get(0,'ScreenSize');
 outerSize = min((screen(4)-40)/2, 512);
     
@@ -99,10 +101,11 @@ clear trackPitch
 % Execute algorithm
 while(numTSteps>=0)
      in = step(reader);
+     in = downsample(in,4);
     if ~usemex
-       [x,pitch,pauseSim, stopSim, resetSim] = HelperPLLClassSim(in, reader.SampleRate, reader.SamplesPerFrame);
+       [x,pitch,pauseSim, stopSim, resetSim] = HelperPLLClassSim(in, reader.SampleRate/downSampleFactor, reader.SamplesPerFrame/downSampleFactor);
     else
-        [x,pitch,pauseSim, stopSim,resetSim] = HelperPLLClassSim_mex(in, reader.SampleRate, reader.SamplesPerFrame);
+        [x,pitch,pauseSim, stopSim,resetSim] = HelperPLLClassSim_mex(in, reader.SampleRate/downSampleFactor, reader.SamplesPerFrame/downSampleFactor);
     end
     x = downsample(x,displayDownSampleFactor);
     if resetSim
