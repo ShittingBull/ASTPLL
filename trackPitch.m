@@ -8,6 +8,7 @@ pitch = zeros(bufferSize,8);
 persistent pllTracker1 pllTracker2 pllTracker3 pllTracker4 pllTracker5 pllTracker6 pllTracker7 pllTracker8;
 persistent envDet1 envDet2 envDet3 envDet4 a b;
 persistent filter1 filter2 filter3 filter4 numFilters numSoS;
+persistent fHP1 fHP2 fHP3 fHP4 fHP5 fHP6 fHP7 fHP8;
 numFilters = 4;
 %a = zeros(numFilters, numSoS * 2+1);
 %b = zeros(numFilters, numSoS * 2+1);
@@ -22,7 +23,8 @@ a1 = [1 -7.93796149810862 27.5860241756024 -54.8180930140147 68.1288897771271 -5
 a2 = [1 -7.83916991862188 26.9586061577262 -53.1202104912837 65.5951605922722 -51.9795708813182 25.8133525468962 -7.34502920268381 0.916861270317286];
 a3 = [1 -7.53510081647868 25.1185707129923 -48.3718449626600 58.8493655248098 -46.3154581436169 23.0287184345855 -6.61490104758397 0.840668006083466];
 a4 = [1 -6.53597426427747 19.6457677624655 -35.2906062704409 41.3545144391363 -32.3493770725518 16.5085690229687 -5.03591862682645 0.706944656268470];
-
+bHp = [0.0110759647918990 0.0110759647918990];
+aHp = [1 -0.977848070416202]
 
 if isempty(pllTracker1)
     
@@ -35,6 +37,16 @@ if isempty(pllTracker1)
     filter2 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator', b2, 'Denominator', a2);
     filter3 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator', b3, 'Denominator', a3);
     filter4 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator', b4, 'Denominator', a4);
+    fHP1 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
+    fHP2 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
+    fHP3 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
+    fHP4 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
+    fHP5 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
+    fHP6 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
+    fHP7 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
+    fHP8 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
+    
+    
     envDet1 = EnvDetector;
     pllTracker1 = PLLClass(fCenter(1),Kd(1),Fs);
     setSampleRate(pllTracker1,Fs);
@@ -81,11 +93,11 @@ if ~isempty(pllTracker1)
     pllTracker1.fCenter = fCenter(1);
     pllTracker1.Kd    = Kd(1);
     pitch(:,1) = step(pllTracker1,x1);
-    
+    pitch(:,1) = step(fHP1,pitch(:,1));
     pllTracker2.fCenter = fCenter(2);
     pllTracker2.Kd    = Kd(2);
     pitch(:,2) = step(pllTracker2,x1);
-    
+    pitch(:,2) = step(fHP2,pitch(:,2));
     
     
     x2 = step(filter2, x);
@@ -94,11 +106,12 @@ if ~isempty(pllTracker1)
     pllTracker3.fCenter = fCenter(3);
     pllTracker3.Kd    = Kd(3);
     pitch(:,3) = step(pllTracker3,x2);
+    pitch(:,3) = step(fHP3,pitch(:,3));
     
     pllTracker4.fCenter = fCenter(4);
     pllTracker4.Kd    = Kd(4);
     pitch(:,4) = step(pllTracker4,x2);
-    
+    pitch(:,4) = step(fHP4,pitch(:,4));
     
     
     x3 = step(filter3, x);
@@ -107,11 +120,12 @@ if ~isempty(pllTracker1)
     pllTracker5.fCenter = fCenter(5);
     pllTracker5.Kd    = Kd(5);
     pitch(:,5) = step(pllTracker5,x3);
+    pitch(:,5) = step(fHP5,pitch(:,5));
     
     pllTracker6.fCenter = fCenter(6);
     pllTracker6.Kd    = Kd(6);
     pitch(:,6) = step(pllTracker6,x3);
-    
+    pitch(:,6) = step(fHP6,pitch(:,6));
     
     x4 = step(filter4, x);
     x4 = step(envDet4,x4);
@@ -119,11 +133,12 @@ if ~isempty(pllTracker1)
     pllTracker7.fCenter = fCenter(7);
     pllTracker7.Kd    = Kd(7);
     pitch(:,7) = step(pllTracker7,x4);
-    
+    pitch(:,7) = step(fHP7,pitch(:,7));
+     
     pllTracker8.fCenter = fCenter(8);
     pllTracker8.Kd    = Kd(8);
     pitch(:,8) = step(pllTracker8,x4);
-    
+    pitch(:,8) = step(fHP8,pitch(:,8));
 end
 
 % if ~isempty(pllTracker)
