@@ -32,14 +32,14 @@ if nargin == 1
 end
 
 downSampleFactor = 4;
-displayDownSampleFactor = 15;
+displayDownSampleFactor = 100;
 screen = get(0,'ScreenSize');
 outerSize = min((screen(4)-40)/2, 512);
     
 % Create scopes only if plotResults is true
 if showVisual     
-    scope = dsp.TimeScope('TimeSpan',.2,'YLimits',[0,1400],...
-        'SampleRate',44100/displayDownSampleFactor,'LayoutDimensions',[1 1],...
+    scope = dsp.TimeScope('TimeSpan',1,'YLimits',[0,1400],...
+        'SampleRate',44100/downSampleFactor/displayDownSampleFactor,'LayoutDimensions',[1 1],...
         'NumInputPorts',1,'TimeSpanOverrunAction','Scroll');
     scope.ActiveDisplay = 1;
     scope.Title = 'Pitch';
@@ -73,20 +73,19 @@ for i= 1:4
 end
 % Define parameters to be tuned
 param = struct([]);
-for i = 1: 8
+for i = 1: 1
     param((i - 1) * 2 + 1).Name = strcat('fCenter', num2str(i));
     param((i - 1) * 2 + 1).InitialValue = freqsPll(i);
-    %param((i - 1) * 2 + 1).InitialValue = 200;
+    param((i - 1) * 2 + 1).InitialValue = 200;
     param((i - 1) * 2 + 1).Limits = [74,1500];
     param((i - 1) * 2 + 2).Name = strcat('Kd', num2str(i));
     param((i - 1) * 2 + 2).InitialValue = Kd(i);
-    %param((i - 1) * 2 + 2).InitialValue = 800;
-    param((i - 1) * 2 + 2).Limits = [0, 2000];
-    
+    param((i - 1) * 2 + 2).InitialValue = 800;
+    param((i - 1) * 2 + 2).Limits = [0, 2000];   
 end
 
 reader = dsp.AudioFileReader(filename,...
-                                'SamplesPerFrame',256,'PlayCount',Inf,'OutputDataType', 'double'); 
+                                'SamplesPerFrame',1024,'PlayCount',Inf,'OutputDataType', 'double'); 
 
 % Create the UI and pass it the parameters
 hUI = HelperCreateParamTuningUI(param, 'Pitch Tracker');

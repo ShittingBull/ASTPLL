@@ -16,7 +16,7 @@ if isempty(player)
     %reader = dsp.AudioFileReader('AR_Lick11_picked_N.wav',...
     %5                             'SamplesPerFrame',256,'PlayCount',Inf,'OutputDataType', 'double');
     %player = audioDeviceWriter('SampleRate',reader.SampleRate,'BufferSize',256);
-    player = audioDeviceWriter('SampleRate',44100/4,'BufferSize',256/4);
+    player = audioDeviceWriter('SampleRate',44100/4,'BufferSize',256);
     startFreq = 80.06;
     fCenter = zeros(1,8);
     filterFCenter = zeros(1,8);
@@ -34,9 +34,9 @@ end
 
 [paramNew, simControlFlags] = HelperUnpackUDP();
 
-input = zeros(256/4,1);
-output = zeros(256/4,1);
-pitch = zeros(256/4,1);
+input = zeros(256,1);
+output = zeros(256,1);
+pitch = zeros(256,1);
 pauseSim = simControlFlags.pauseSim;
 stopSim = simControlFlags.stopSim;
 resetSim = simControlFlags.resetObj;
@@ -58,12 +58,12 @@ if ~isempty(paramNew)
     if simControlFlags.resetObj % reset System objects
         %reset(reader);
         % Reset pitch shifter
-        trackPitch(input,256/4,fCenter,filterFCenter,Kd,Fs,true);
+        trackPitch(input,256,fCenter,filterFCenter,Kd,Fs,true);
     end
 end
 
 %x = step(reader);
-pitch =  trackPitch(in,256/4,fCenter, filterFCenter, Kd,Fs);
+pitch =  trackPitch(in,256,fCenter, filterFCenter, Kd,Fs);
 step(player,in);
 
 input  = in(:,1);
