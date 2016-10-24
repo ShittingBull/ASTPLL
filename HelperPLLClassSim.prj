@@ -1,7 +1,7 @@
 <deployment-project plugin="plugin.coder" plugin-version="R2016a">
-  <configuration build-checksum="8165578" file="/Users/JohannesBoehler/Documents/MATLAB/ASTPLL/HelperPLLClassSim.prj" location="/Users/JohannesBoehler/Documents/MATLAB/ASTPLL" name="HelperPLLClassSim" target="target.unifiedcoder" target-name="MATLAB Coder">
+  <configuration build-checksum="998355316" file="/Users/johannesbohler/Documents/MATLAB/ASTPLL/HelperPLLClassSim.prj" location="/Users/johannesbohler/Documents/MATLAB/ASTPLL" name="HelperPLLClassSim" target="target.unifiedcoder" target-name="MATLAB Coder">
     <profile key="profile.mex">
-      <param.BuiltInstrumentedMex />
+      <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
       <param.WorkingFolder>option.WorkingFolder.Project</param.WorkingFolder>
       <param.SpecifiedWorkingFolder />
@@ -682,7 +682,7 @@
     <param.objective>option.objective.c</param.objective>
     <param.WorkflowStep>generateCode</param.WorkflowStep>
     <param.TestSnippets>
-      <item>audioPLLClassExample('sine225Hz.wav',0)</item>
+      <item>audioPLLClassExample('chirp.wav',0);</item>
     </param.TestSnippets>
     <param.DefaultImportExportVariable>config</param.DefaultImportExportVariable>
     <param.UseGlobals>option.UseGlobals.No</param.UseGlobals>
@@ -699,7 +699,7 @@
     <param.AutoInferUnboundedSizeThreshold>2048</param.AutoInferUnboundedSizeThreshold>
     <param.EnableFixedPointStep>false</param.EnableFixedPointStep>
     <param.EnableScreener>true</param.EnableScreener>
-    <param.AnnotationChecksum>3378237117</param.AnnotationChecksum>
+    <param.AnnotationChecksum>3602015357</param.AnnotationChecksum>
     <var.LegacyTarget />
     <var.MirrorOnOpen>false</var.MirrorOnOpen>
     <param.FixedPointEnabled>false</param.FixedPointEnabled>
@@ -707,13 +707,13 @@
     <var.DismissScreener>true</var.DismissScreener>
     <param.unifiedParamStorage />
     <var.gc.lastOutputRoot>codegen/lib/HelperPLLClassSim</var.gc.lastOutputRoot>
-    <var.gc.preBuildChecksum>4232688722</var.gc.preBuildChecksum>
+    <var.gc.preBuildChecksum>1847721510</var.gc.preBuildChecksum>
     <var.cfi.lastOutputRoot>codegen/mex/HelperPLLClassSim</var.cfi.lastOutputRoot>
-    <var.cfi.preBuildChecksum>1934784514</var.cfi.preBuildChecksum>
-    <var.lastCfiTestSnippet>audioPLLClassExample('sine225Hz.wav',0)</var.lastCfiTestSnippet>
+    <var.cfi.preBuildChecksum>1392170137</var.cfi.preBuildChecksum>
+    <var.lastCfiTestSnippet>audioPLLClassExample('chirp.wav',0);</var.lastCfiTestSnippet>
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
-    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;/Users/JohannesBoehler/Documents/MATLAB/ASTPLL/EnvDetector.m&lt;/file&gt;&lt;file&gt;/Users/JohannesBoehler/Documents/MATLAB/ASTPLL/HelperPLLClassSim.m&lt;/file&gt;&lt;file&gt;/Users/JohannesBoehler/Documents/MATLAB/ASTPLL/PLLClass.m&lt;/file&gt;&lt;file&gt;/Users/JohannesBoehler/Documents/MATLAB/ASTPLL/trackPitch.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;3202020426&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
-    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;/Users/JohannesBoehler/Documents/MATLAB/ASTPLL/EnvDetector.m&lt;/file&gt;&lt;file&gt;/Users/JohannesBoehler/Documents/MATLAB/ASTPLL/HelperPLLClassSim.m&lt;/file&gt;&lt;file&gt;/Users/JohannesBoehler/Documents/MATLAB/ASTPLL/PLLClass.m&lt;/file&gt;&lt;file&gt;/Users/JohannesBoehler/Documents/MATLAB/ASTPLL/trackPitch.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
+    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/EnvDetector.m&lt;/file&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/HelperPLLClassSim.m&lt;/file&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/PLLClass.m&lt;/file&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/trackPitch.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;2875024934&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
+    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/EnvDetector.m&lt;/file&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/HelperPLLClassSim.m&lt;/file&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/PLLClass.m&lt;/file&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/trackPitch.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
     <param.forceMexBuild>false</param.forceMexBuild>
     <param.configImportActive>false</param.configImportActive>
     <var.boundToGui>true</var.boundToGui>
@@ -833,12 +833,10 @@
     </unset>
     <fileset.entrypoints>
       <file custom-data-expanded="false" value="${PROJECT_ROOT}/HelperPLLClassSim.m">
-        <Marker>1476810793377</Marker>
+        <Marker>1477070054865</Marker>
       </file>
     </fileset.entrypoints>
-    <fileset.testbench>
-      <file>${PROJECT_ROOT}/audioPLLClassExample.m</file>
-    </fileset.testbench>
+    <fileset.testbench />
     <fileset.inputtypes>
       <file custom-data-expanded="false" value="${PROJECT_ROOT}/HelperPLLClassSim.m">
         <Inputs fileName="HelperPLLClassSim.m" functionName="HelperPLLClassSim">
@@ -867,7 +865,7 @@
       </file>
     </fileset.inputtypes>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}/codegen/lib/HelperPLLClassSim" name="HelperPLLClassSim.a" optional="false">/Users/JohannesBoehler/Documents/MATLAB/ASTPLL/codegen/lib/HelperPLLClassSim/HelperPLLClassSim.a</file>
+      <file location="${PROJECT_ROOT}/codegen/lib/HelperPLLClassSim" name="HelperPLLClassSim.a" optional="false">/Users/johannesbohler/Documents/MATLAB/ASTPLL/codegen/lib/HelperPLLClassSim/HelperPLLClassSim.a</file>
     </build-deliverables>
     <workflow />
     <matlab>

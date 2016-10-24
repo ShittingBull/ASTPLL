@@ -31,7 +31,6 @@ classdef EnvDetector < audioPlugin & matlab.System
                 alphaRel = 0;
             end
             
-            
             for i=1:samples
                 if in(i) > plugin.state
                     plugin.state = in(i);
@@ -53,7 +52,7 @@ classdef EnvDetector < audioPlugin & matlab.System
             for i=1:samples
                 plugin.state2 = alphaAtt * plugin.state2 + (1-alphaAtt) * tmp(i);
                 env(i) = plugin.state2;
-                if in(i) > plugin.flatEnvThresh
+                if env(i) > plugin.flatEnvThresh
                     out(i) = (1 / env(i)) * in(i);  
                 else 
                     out(i) = in(i);
