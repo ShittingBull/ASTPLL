@@ -7,7 +7,7 @@ function [pitch] = trackPitch(x, bufferSize, fCenter, filterFCenter,Kd, Fs, rese
 pitch = zeros(bufferSize,8);
 persistent pllTracker1 pllTracker2 pllTracker3 pllTracker4 pllTracker5 pllTracker6 pllTracker7 pllTracker8;
 persistent envDet1 envDet2 envDet3 envDet4 a b;
-persistent filter1 filter2 filter3 filter4 numFilters numSoS;
+persistent filter1 filter2 filter3 filter4 filter5 filter6 filter7 filter8 numFilters numSoS;
 persistent fHP1 fHP2 fHP3 fHP4 fHP5 fHP6 fHP7 fHP8;
 numFilters = 4;
 %a = zeros(numFilters, numSoS * 2+1);
@@ -15,16 +15,16 @@ numFilters = 4;
 numFilters = 4;
 numSoS = 4;
 filterFCenter_ = [80.0600000000000 160.120000000000 160.120000000000 320.240000000000 320.240000000000 640.480000000000 640.480000000000 1280.96000000000];
-b1 = [0.00100282823742832 -0.00793462290001029 0.0275525472915120 -0.0548438333482487 0.0684461614389332 -0.0548438333482487 0.0275525472915119 -0.00793462290001027 0.00100282823742832];
-b2 = [0.00103991559498592 -0.00796693001296241 0.0270249495074909 -0.0530359819587393 0.0658760938128036 -0.0530359819587393 0.0270249495074908 -0.00796693001296239 0.00103991559498592];
-b3 = [0.00121727625977686 -0.00828402601803919 0.0256958911225454 -0.0476978605480339 0.0581374565843181 -0.0476978605480338 0.0256958911225454 -0.00828402601803918 0.00121727625977686];
-b4 = [0.00203377831799350 -0.00949778393960610 0.0214203083384978 -0.0323966825192715 0.0368849057383270 -0.0323966825192715 0.0214203083384978 -0.00949778393960611 0.00203377831799350];
-a1 = [1 -7.95214079465371 27.6846530625388 -55.1123063739565 68.6167933287457 -54.7122403418692 27.2841858794475 -7.78022498789049 0.971280227933667];
-a2 = [1 -7.86722028055696 27.1518654977360 -53.6923531710000 66.5386453122635 -52.9155335325543 26.3719258500798 -7.53071696109162 0.943387359477195];
-a3 = [1 -7.58913806513934 25.4803484246814 -49.4207747292700 60.5566160460859 -48.0002061908360 24.0368315053349 -6.95365414855227 0.889995374511900];
-a4 = [1 -6.62967670547219 20.2163859673110 -36.8424464481725 43.7967799376830 -34.7518917795345 17.9877103207949 -5.56491798581183 0.792202826756546];
-bHp = [0.0110759647918990 0.0110759647918990];
-aHp = [1 -0.977848070416202]
+b1 = [0.000108577708705801 -0.000819961607043458 0.00275142494075665 -0.00536328664184797 0.00664649119903196 -0.00536328664184797 0.00275142494075665 -0.000819961607043457 0.000108577708705801];
+b2 = [0.000140396827189275 -0.000917009014431126 0.00274413294236868 -0.00496967580300020 0.00600431013884976 -0.00496967580300019 0.00274413294236868 -0.000917009014431126 0.000140396827189275];
+b3 = [0.000291184899919921 -0.00129401980930076 0.00270072647817739 -0.00380824205731172 0.00422071119261418 -0.00380824205731172 0.00270072647817738 -0.00129401980930075 0.000291184899919920];
+b4 = [0.00121811534422936 -0.00233462623340905 0.000692534331913018 -0.000838263480842863 0.00252662040343563 -0.000838263480842861 0.000692534331913017 -0.00233462623340905 0.00121811534422937];
+a1 = [1 -7.91667676354819 27.4487328292070 -54.4403836080771 67.5549449600875 -53.7069021740514 26.7140937655486 -7.60100241783457 0.947193410408045];
+a2 = [1 -7.77626751398240 26.5687745122113 -52.0918015093737 64.1023915166688 -50.6971977288624 25.1653466497501 -7.16842958277734 0.897184087395995];
+a3 = [1 -7.33210471682983 23.9413538304971 -45.4428472380410 54.8218679481891 -43.0399744346667 21.4771160668729 -6.23031093089821 0.805001630715167];
+a4 = [1 -5.86570987064921 16.4000193694953 -28.1288222825564 32.2370922205985 -25.2298762853053 13.1936641853327 -4.23338583918038 0.648421774427983];
+bLp = [0.0110759647918990 0.0110759647918990];
+aLp = [1 -0.977848070416202]
 
 if isempty(pllTracker1)
     
@@ -33,18 +33,22 @@ if isempty(pllTracker1)
     %[b(2,:), a(2,:)] = ellip(3, 1, 100, [(filterFCenter_(3)/(44100/2)) (filterFCenter_(4) /(44100/2))]); 
     %[b(3,:), a(3,:)] = ellip(3, 1, 100, [(filterFCenter_(5)/(44100/2)) (filterFCenter_(6) /(44100/2))]); 
     %[b(4,:), a(4,:)] = ellip(3, 1, 100, [(filterFCenter_(7)/(44100/2)) (filterFCenter_(8) /(44100/2))]); 
-    filter1 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator', b1, 'Denominator', a1);
-    filter2 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator', b2, 'Denominator', a2);
-    filter3 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator', b3, 'Denominator', a3);
-    filter4 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator', b4, 'Denominator', a4);
-    fHP1 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
-    fHP2 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
-    fHP3 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
-    fHP4 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
-    fHP5 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
-    fHP6 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
-    fHP7 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
-    fHP8 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bHp , 'Denominator', aHp);
+    filter1 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b1, 'Denominator', a1);
+    filter2 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b2, 'Denominator', a2);
+    filter3 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b3, 'Denominator', a3);
+    filter4 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b4, 'Denominator', a4);
+    filter5 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b1, 'Denominator', a1);
+    filter6 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b2, 'Denominator', a2);
+    filter7 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b3, 'Denominator', a3);
+    filter8 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b4, 'Denominator', a4);
+    fHP1 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+    fHP2 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+    fHP3 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+    fHP4 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+    fHP5 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+    fHP6 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+    fHP7 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+    fHP8 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
     
     
     envDet1 = EnvDetector;
@@ -88,6 +92,7 @@ if ~isempty(pllTracker1)
     end
     
     x1 = step(filter1, x);
+    x1 = step(filter5, x1);
     x1 = step(envDet1,x1);
     
     pllTracker1.fCenter = fCenter(1);
@@ -101,6 +106,7 @@ if ~isempty(pllTracker1)
     
     
     x2 = step(filter2, x);
+    x2 = step(filter6, x2);
     x2 = step(envDet2,x2);
     
     pllTracker3.fCenter = fCenter(3);
@@ -115,6 +121,7 @@ if ~isempty(pllTracker1)
     
     
     x3 = step(filter3, x);
+    x3 = step(filter7, x3);
     x3 = step(envDet3,x3);
     
     pllTracker5.fCenter = fCenter(5);
@@ -128,6 +135,7 @@ if ~isempty(pllTracker1)
     pitch(:,6) = step(fHP6,pitch(:,6));
     
     x4 = step(filter4, x);
+    x4 = step(filter8, x4);
     x4 = step(envDet4,x4);
     
     pllTracker7.fCenter = fCenter(7);
