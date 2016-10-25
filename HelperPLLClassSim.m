@@ -16,7 +16,7 @@ if isempty(player)
     %reader = dsp.AudioFileReader('AR_Lick11_picked_N.wav',...
     %5                             'SamplesPerFrame',256,'PlayCount',Inf,'OutputDataType', 'double');
     %player = audioDeviceWriter('SampleRate',reader.SampleRate,'BufferSize',256);
-    player = audioDeviceWriter('SampleRate',44100/4,'BufferSize',256);
+    player = audioDeviceWriter('SampleRate',44100/5,'BufferSize',256);
     startFreq = 80.06;
     fCenter = zeros(1,8);
     filterFCenter = zeros(1,8);

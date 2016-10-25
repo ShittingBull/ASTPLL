@@ -19,7 +19,6 @@ function scopeHandles = audioPLLClassExample(filename,usemex,showVisual,numTStep
 % Copyright 2015 The MathWorks, Inc.
 
 %#codegen
-
 %% Default values for inputs
 if nargin < 3
     numTSteps = Inf; % Run until user stops simulation. 
@@ -31,14 +30,14 @@ if nargin == 1
     usemex = false; % Do not generate code.
 end
 
-downSampleFactor = 4;
-displayDownSampleFactor = 100;
+downSampleFactor = 5;
+displayDownSampleFactor = 300;
 screen = get(0,'ScreenSize');
 outerSize = min((screen(4)-40)/2, 512);
     
 % Create scopes only if plotResults is true
 if showVisual     
-    scope = dsp.TimeScope('TimeSpan',1,'YLimits',[0,1400],...
+    scope = dsp.TimeScope('TimeSpan',2,'YLimits',[0,1400],...
         'SampleRate',44100/downSampleFactor/displayDownSampleFactor,'LayoutDimensions',[1 1],...
         'NumInputPorts',1,'TimeSpanOverrunAction','Scroll');
     scope.ActiveDisplay = 1;
@@ -73,19 +72,19 @@ for i= 1:4
 end
 % Define parameters to be tuned
 param = struct([]);
-for i = 1: 1
+for i = 1: 8
     param((i - 1) * 2 + 1).Name = strcat('fCenter', num2str(i));
     param((i - 1) * 2 + 1).InitialValue = freqsPll(i);
-    param((i - 1) * 2 + 1).InitialValue = 200;
+    %param((i - 1) * 2 + 1).InitialValue = 200;
     param((i - 1) * 2 + 1).Limits = [74,1500];
     param((i - 1) * 2 + 2).Name = strcat('Kd', num2str(i));
     param((i - 1) * 2 + 2).InitialValue = Kd(i);
-    param((i - 1) * 2 + 2).InitialValue = 800;
+    %param((i - 1) * 2 + 2).InitialValue = 800;
     param((i - 1) * 2 + 2).Limits = [0, 2000];   
 end
 
 reader = dsp.AudioFileReader(filename,...
-                                'SamplesPerFrame',1024,'PlayCount',Inf,'OutputDataType', 'double'); 
+                                'SamplesPerFrame',256*downSampleFactor,'PlayCount',Inf,'OutputDataType', 'double'); 
 
 % Create the UI and pass it the parameters
 hUI = HelperCreateParamTuningUI(param, 'Pitch Tracker');
@@ -100,7 +99,7 @@ clear trackPitch
 % Execute algorithm
 while(numTSteps>=0)
      in = step(reader);
-     in = downsample(in,4);
+     in = downsample(in,downSampleFactor);
     if ~usemex
        [x,pitch,pauseSim, stopSim, resetSim] = HelperPLLClassSim(in, reader.SampleRate/downSampleFactor, reader.SamplesPerFrame/downSampleFactor);
     else

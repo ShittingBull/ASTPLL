@@ -1,7 +1,7 @@
 <deployment-project plugin="plugin.coder" plugin-version="R2016a">
-  <configuration build-checksum="874123305" file="/Users/johannesbohler/Documents/MATLAB/ASTPLL/HelperPLLClassSim.prj" location="/Users/johannesbohler/Documents/MATLAB/ASTPLL" name="HelperPLLClassSim" target="target.unifiedcoder" target-name="MATLAB Coder">
+  <configuration build-checksum="430973626" file="c:\Users\Johann\Documents\MATLAB\ASTPLL\HelperPLLClassSim.prj" location="c:\Users\Johann\Documents\MATLAB\ASTPLL" name="HelperPLLClassSim" target="target.unifiedcoder" target-name="MATLAB Coder">
     <profile key="profile.mex">
-      <param.BuiltInstrumentedMex />
+      <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
       <param.WorkingFolder>option.WorkingFolder.Project</param.WorkingFolder>
       <param.SpecifiedWorkingFolder />
@@ -12,7 +12,7 @@
       <param.ExtrinsicCalls>true</param.ExtrinsicCalls>
       <param.IntegrityChecks>true</param.IntegrityChecks>
       <param.SaturateOnIntegerOverflow>true</param.SaturateOnIntegerOverflow>
-      <param.GlobalDataSyncMethod>option.GlobalDataSyncMethod.SyncAlways</param.GlobalDataSyncMethod>
+      <param.GlobalDataSyncMethod>option.GlobalDataSyncMethod.NoSync</param.GlobalDataSyncMethod>
       <param.EnableVariableSizing>true</param.EnableVariableSizing>
       <param.DynamicMemoryAllocation>option.DynamicMemoryAllocation.Threshold</param.DynamicMemoryAllocation>
       <param.DynamicMemoryAllocationThreshold>65536</param.DynamicMemoryAllocationThreshold>
@@ -27,7 +27,7 @@
       <param.DefaultTestFile />
       <param.MergeInstrumentationResults>false</param.MergeInstrumentationResults>
       <param.VerificationMode>option.VerificationMode.None</param.VerificationMode>
-      <param.VerificationStatus>option.VerificationStatus.Passed</param.VerificationStatus>
+      <param.VerificationStatus>option.VerificationStatus.Inactive</param.VerificationStatus>
       <param.CustomSourceCode />
       <param.CustomHeaderCode />
       <param.CustomInitializer />
@@ -38,8 +38,9 @@
       <param.PostCodeGenCommand />
       <param.mex.GenCodeOnly>false</param.mex.GenCodeOnly>
       <param.ConstantFoldingTimeout>40000</param.ConstantFoldingTimeout>
-      <param.RecursionLimit>100</param.RecursionLimit>
-      <param.PreserveVariableNames>option.PreserveVariableNames.UserNames</param.PreserveVariableNames>
+      <param.CompileTimeRecursionLimit>50</param.CompileTimeRecursionLimit>
+      <param.EnableRuntimeRecursion>true</param.EnableRuntimeRecursion>
+      <param.PreserveVariableNames>option.PreserveVariableNames.None</param.PreserveVariableNames>
       <param.TargetLang>option.TargetLang.C</param.TargetLang>
       <param.EchoExpressions>true</param.EchoExpressions>
       <param.InlineThreshold>10</param.InlineThreshold>
@@ -51,6 +52,9 @@
       <param.InitFltsAndDblsToZero>true</param.InitFltsAndDblsToZero>
       <param.ConstantInputs>option.ConstantInputs.CheckValues</param.ConstantInputs>
       <param.EnableCRICodeCoverage>true</param.EnableCRICodeCoverage>
+      <param.EnableJIT>false</param.EnableJIT>
+      <param.EnableJITSilentBailOut>false</param.EnableJITSilentBailOut>
+      <param.CheckForIssuesJIT>true</param.CheckForIssuesJIT>
       <unset>
         <param.BuiltInstrumentedMex />
         <param.RanInstrumentedMex />
@@ -76,6 +80,8 @@
         <param.LaunchReport />
         <param.DefaultTestFile />
         <param.MergeInstrumentationResults />
+        <param.VerificationMode />
+        <param.VerificationStatus />
         <param.CustomSourceCode />
         <param.CustomHeaderCode />
         <param.CustomInitializer />
@@ -86,7 +92,8 @@
         <param.PostCodeGenCommand />
         <param.mex.GenCodeOnly />
         <param.ConstantFoldingTimeout />
-        <param.RecursionLimit />
+        <param.CompileTimeRecursionLimit />
+        <param.EnableRuntimeRecursion />
         <param.PreserveVariableNames />
         <param.TargetLang />
         <param.EchoExpressions />
@@ -99,6 +106,9 @@
         <param.InitFltsAndDblsToZero />
         <param.ConstantInputs />
         <param.EnableCRICodeCoverage />
+        <param.EnableJIT />
+        <param.EnableJITSilentBailOut />
+        <param.CheckForIssuesJIT />
       </unset>
     </profile>
     <profile key="profile.c">
@@ -161,28 +171,30 @@
       <param.PostCodeGenCommand />
       <param.TargetLangStandard>C89/C90 (ANSI)</param.TargetLangStandard>
       <param.CodeReplacementLibrary>None</param.CodeReplacementLibrary>
-      <param.DeprecatedCRLFlag>false</param.DeprecatedCRLFlag>
+      <param.DeprecatedCRLFlag />
       <param.SameHardware>true</param.SameHardware>
       <param.Toolchain>Automatically locate an installed toolchain</param.Toolchain>
       <param.BuildConfiguration>Faster Builds</param.BuildConfiguration>
       <param.CustomToolchainOptions />
-      <var.ToolchainSettingsVisible>true</var.ToolchainSettingsVisible>
+      <var.ToolchainSettingsVisible />
       <param.target.Data />
       <param.target.ActiveType>option.target.TargetType.MatlabHost</param.target.ActiveType>
       <param.target.ActiveTarget />
       <param.HardwareVendor.Production>Generic</param.HardwareVendor.Production>
       <param.HardwareType.Production>MATLAB Host Computer</param.HardwareType.Production>
       <param.HWDeviceType.Production />
-      <var.instance.enabled.Production>true</var.instance.enabled.Production>
+      <var.instance.enabled.Production />
       <param.HardwareSizeChar.Production>8</param.HardwareSizeChar.Production>
       <param.HardwareSizeShort.Production>16</param.HardwareSizeShort.Production>
       <param.HardwareSizeInt.Production>32</param.HardwareSizeInt.Production>
-      <param.HardwareSizeLong.Production>64</param.HardwareSizeLong.Production>
+      <param.HardwareSizeLong.Production>32</param.HardwareSizeLong.Production>
       <param.HardwareSizeLongLong.Production>64</param.HardwareSizeLongLong.Production>
       <param.HardwareSizeFloat.Production>32</param.HardwareSizeFloat.Production>
       <param.HardwareSizeDouble.Production>64</param.HardwareSizeDouble.Production>
       <param.HardwareSizeWord.Production>64</param.HardwareSizeWord.Production>
       <param.HardwareSizePointer.Production>64</param.HardwareSizePointer.Production>
+      <param.HardwareSizeSizeT.Production>64</param.HardwareSizeSizeT.Production>
+      <param.HardwareSizePtrDiffT.Production>64</param.HardwareSizePtrDiffT.Production>
       <param.HardwareEndianness.Production>option.HardwareEndianness.Little</param.HardwareEndianness.Production>
       <param.HardwareArithmeticRightShift.Production>true</param.HardwareArithmeticRightShift.Production>
       <param.HardwareLongLongMode.Production>true</param.HardwareLongLongMode.Production>
@@ -196,12 +208,14 @@
       <param.HardwareSizeChar.Target>8</param.HardwareSizeChar.Target>
       <param.HardwareSizeShort.Target>16</param.HardwareSizeShort.Target>
       <param.HardwareSizeInt.Target>32</param.HardwareSizeInt.Target>
-      <param.HardwareSizeLong.Target>64</param.HardwareSizeLong.Target>
+      <param.HardwareSizeLong.Target>32</param.HardwareSizeLong.Target>
       <param.HardwareSizeLongLong.Target>64</param.HardwareSizeLongLong.Target>
       <param.HardwareSizeFloat.Target>32</param.HardwareSizeFloat.Target>
       <param.HardwareSizeDouble.Target>64</param.HardwareSizeDouble.Target>
       <param.HardwareSizeWord.Target>64</param.HardwareSizeWord.Target>
       <param.HardwareSizePointer.Target>64</param.HardwareSizePointer.Target>
+      <param.HardwareSizeSizeT.Target>64</param.HardwareSizeSizeT.Target>
+      <param.HardwareSizePtrDiffT.Target>64</param.HardwareSizePtrDiffT.Target>
       <param.HardwareEndianness.Target>option.HardwareEndianness.Little</param.HardwareEndianness.Target>
       <param.HardwareArithmeticRightShift.Target>true</param.HardwareArithmeticRightShift.Target>
       <param.HardwareLongLongMode.Target>true</param.HardwareLongLongMode.Target>
@@ -212,21 +226,23 @@
       <param.IndentStyle>option.IndentStyle.K&amp;R</param.IndentStyle>
       <param.IndentSize>2</param.IndentSize>
       <param.ConstantFoldingTimeout>40000</param.ConstantFoldingTimeout>
-      <param.RecursionLimit>100</param.RecursionLimit>
+      <param.CompileTimeRecursionLimit>50</param.CompileTimeRecursionLimit>
+      <param.EnableRuntimeRecursion>true</param.EnableRuntimeRecursion>
       <param.IncludeTerminateFcn>true</param.IncludeTerminateFcn>
       <param.GenerateExampleMain>option.GenerateExampleMain.GenerateCodeOnly</param.GenerateExampleMain>
-      <param.PreserveVariableNames>option.PreserveVariableNames.UserNames</param.PreserveVariableNames>
+      <param.PreserveVariableNames>option.PreserveVariableNames.None</param.PreserveVariableNames>
       <param.TargetLang>option.TargetLang.C</param.TargetLang>
-      <param.CCompilerOptimization>option.CCompilerOptimization.Off</param.CCompilerOptimization>
+      <param.CCompilerOptimization />
       <param.CCompilerCustomOptimizations />
       <param.GenerateMakefile>true</param.GenerateMakefile>
       <param.BuildToolEnable>false</param.BuildToolEnable>
-      <param.MakeCommand>make_rtw</param.MakeCommand>
-      <param.TemplateMakefile>default_tmf</param.TemplateMakefile>
+      <param.MakeCommand />
+      <param.TemplateMakefile />
       <param.BuildToolConfiguration />
       <param.InlineThreshold>10</param.InlineThreshold>
       <param.InlineThresholdMax>200</param.InlineThresholdMax>
       <param.InlineStackLimit>4000</param.InlineStackLimit>
+      <param.EnableStrengthReduction>false</param.EnableStrengthReduction>
       <param.EnableMemcpy>true</param.EnableMemcpy>
       <param.MemcpyThreshold>64</param.MemcpyThreshold>
       <param.EnableOpenMP>true</param.EnableOpenMP>
@@ -281,6 +297,7 @@
         <param.DefaultTestFile />
         <param.MergeInstrumentationResults />
         <param.RanPilSilVerification />
+        <param.VerificationMode />
         <param.VerificationStatus />
         <param.CustomSourceCode />
         <param.CustomHeaderCode />
@@ -305,15 +322,36 @@
         <param.HardwareType.Production />
         <param.HWDeviceType.Production />
         <var.instance.enabled.Production />
+        <param.HardwareSizeChar.Production />
+        <param.HardwareSizeShort.Production />
+        <param.HardwareSizeInt.Production />
+        <param.HardwareSizeLong.Production />
+        <param.HardwareSizeLongLong.Production />
+        <param.HardwareSizeFloat.Production />
+        <param.HardwareSizeDouble.Production />
+        <param.HardwareEndianness.Production />
+        <param.HardwareAtomicIntegerSize.Production />
+        <param.HardwareAtomicFloatSize.Production />
         <param.HardwareVendor.Target />
         <param.HardwareType.Target />
         <param.HWDeviceType.Target />
         <var.instance.enabled.Target />
+        <param.HardwareSizeChar.Target />
+        <param.HardwareSizeShort.Target />
+        <param.HardwareSizeInt.Target />
+        <param.HardwareSizeLong.Target />
+        <param.HardwareSizeLongLong.Target />
+        <param.HardwareSizeFloat.Target />
+        <param.HardwareSizeDouble.Target />
+        <param.HardwareEndianness.Target />
+        <param.HardwareAtomicIntegerSize.Target />
+        <param.HardwareAtomicFloatSize.Target />
         <param.CastingMode />
         <param.IndentStyle />
         <param.IndentSize />
         <param.ConstantFoldingTimeout />
-        <param.RecursionLimit />
+        <param.CompileTimeRecursionLimit />
+        <param.EnableRuntimeRecursion />
         <param.IncludeTerminateFcn />
         <param.GenerateExampleMain />
         <param.PreserveVariableNames />
@@ -328,6 +366,7 @@
         <param.InlineThreshold />
         <param.InlineThresholdMax />
         <param.InlineStackLimit />
+        <param.EnableStrengthReduction />
         <param.EnableMemcpy />
         <param.MemcpyThreshold />
         <param.EnableOpenMP />
@@ -505,6 +544,7 @@
       <param.hdl.InitializeBlockRAM />
       <param.hdl.RAMArchitecture />
       <param.hdl.PartitionFunctions />
+      <param.hdl.InstantiateFunctions />
       <param.hdl.GenerateMLFcnBlock />
       <param.hdl.GenerateXSGBlock />
       <unset>
@@ -675,18 +715,20 @@
         <param.hdl.InitializeBlockRAM />
         <param.hdl.RAMArchitecture />
         <param.hdl.PartitionFunctions />
+        <param.hdl.InstantiateFunctions />
         <param.hdl.GenerateMLFcnBlock />
         <param.hdl.GenerateXSGBlock />
       </unset>
     </profile>
     <param.objective>option.objective.c</param.objective>
-    <param.WorkflowStep>workflowSummary</param.WorkflowStep>
+    <param.WorkflowStep>verifyCompatibility</param.WorkflowStep>
     <param.TestSnippets>
-      <item>audioPLLClassExample('chirp.wav', 0)</item>
+      <item>audioPLLClassExample('chirp.wav',0)</item>
     </param.TestSnippets>
     <param.DefaultImportExportVariable>config</param.DefaultImportExportVariable>
+    <param.RowMajor>false</param.RowMajor>
     <param.UseGlobals>option.UseGlobals.No</param.UseGlobals>
-    <param.outputfile>${PROJECT_ROOT}/codegen/lib/HelperPLLClassSim/HelperPLLClassSim.a</param.outputfile>
+    <param.outputfile>${PROJECT_ROOT}\codegen\lib\HelperPLLClassSim\HelperPLLClassSim.lib</param.outputfile>
     <param.version>R2012a</param.version>
     <param.HasECoderFeatures>true</param.HasECoderFeatures>
     <param.mex.mainhtml />
@@ -699,28 +741,29 @@
     <param.AutoInferUnboundedSizeThreshold>2048</param.AutoInferUnboundedSizeThreshold>
     <param.EnableFixedPointStep>false</param.EnableFixedPointStep>
     <param.EnableScreener>true</param.EnableScreener>
-    <param.AnnotationChecksum>2163564333</param.AnnotationChecksum>
+    <param.AnnotationChecksum>2350174080</param.AnnotationChecksum>
     <var.LegacyTarget />
     <var.MirrorOnOpen>false</var.MirrorOnOpen>
     <param.FixedPointEnabled>false</param.FixedPointEnabled>
     <var.redirectedInputTypeData />
     <var.DismissScreener>true</var.DismissScreener>
     <param.unifiedParamStorage />
-    <var.gc.lastOutputRoot>codegen/lib/HelperPLLClassSim</var.gc.lastOutputRoot>
-    <var.gc.preBuildChecksum>3809439736</var.gc.preBuildChecksum>
-    <var.cfi.lastOutputRoot>codegen/mex/HelperPLLClassSim</var.cfi.lastOutputRoot>
-    <var.cfi.preBuildChecksum>1596264873</var.cfi.preBuildChecksum>
-    <var.lastCfiTestSnippet>audioPLLClassExample('chirp.wav', 0)</var.lastCfiTestSnippet>
+    <var.gc.lastOutputRoot />
+    <var.gc.lastOutputType />
+    <var.gc.preBuildChecksum />
+    <var.cfi.lastOutputRoot>codegen\mex\HelperPLLClassSim</var.cfi.lastOutputRoot>
+    <var.cfi.preBuildChecksum>2198103418</var.cfi.preBuildChecksum>
+    <var.lastCfiTestSnippet>audioPLLClassExample('chirp.wav',0)</var.lastCfiTestSnippet>
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
-    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/EnvDetector.m&lt;/file&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/HelperPLLClassSim.m&lt;/file&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/PLLClass.m&lt;/file&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/trackPitch.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;4288373855&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
-    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/EnvDetector.m&lt;/file&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/HelperPLLClassSim.m&lt;/file&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/PLLClass.m&lt;/file&gt;&lt;file&gt;/Users/johannesbohler/Documents/MATLAB/ASTPLL/trackPitch.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
-    <param.forceMexBuild>false</param.forceMexBuild>
+    <var.lastUserSourceChecksum />
+    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;c:\Users\Johann\Documents\MATLAB\ASTPLL\EnvDetector.m&lt;/file&gt;&lt;file&gt;c:\Users\Johann\Documents\MATLAB\ASTPLL\HelperPLLClassSim.m&lt;/file&gt;&lt;file&gt;c:\Users\Johann\Documents\MATLAB\ASTPLL\PLLClass.m&lt;/file&gt;&lt;file&gt;c:\Users\Johann\Documents\MATLAB\ASTPLL\trackPitch.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
+    <param.forceMexBuild>true</param.forceMexBuild>
     <param.configImportActive>false</param.configImportActive>
     <var.boundToGui>true</var.boundToGui>
     <param.mex.outputfile>HelperPLLClassSim_mex</param.mex.outputfile>
     <param.grt.outputfile>HelperPLLClassSim</param.grt.outputfile>
     <param.artifact>option.target.artifact.lib</param.artifact>
-    <param.outputfile>${PROJECT_ROOT}/codegen/lib/HelperPLLClassSim/HelperPLLClassSim.a</param.outputfile>
+    <param.outputfile>${PROJECT_ROOT}\codegen\lib\HelperPLLClassSim\HelperPLLClassSim.lib</param.outputfile>
     <param.EnableAutoExtrinsicCalls>true</param.EnableAutoExtrinsicCalls>
     <param.UsePreconditions>false</param.UsePreconditions>
     <param.FeatureFlags />
@@ -764,8 +807,12 @@
     <var.snapshotChecksum />
     <var.functionBlockSid />
     <param.fptSignedness>false</param.fptSignedness>
+    <var.FixedPointAnalysisMode>option.FixedPointAnalysisMode.Sim</var.FixedPointAnalysisMode>
+    <param.FixedPointUseDesignRanges>false</param.FixedPointUseDesignRanges>
     <unset>
+      <param.objective />
       <param.DefaultImportExportVariable />
+      <param.RowMajor />
       <param.UseGlobals />
       <param.outputfile />
       <param.version />
@@ -785,7 +832,11 @@
       <param.FixedPointEnabled />
       <var.redirectedInputTypeData />
       <param.unifiedParamStorage />
+      <var.gc.lastOutputRoot />
+      <var.gc.lastOutputType />
+      <var.gc.preBuildChecksum />
       <var.outdatedOnRestore />
+      <var.lastUserSourceChecksum />
       <param.configImportActive />
       <param.mex.outputfile />
       <param.grt.outputfile />
@@ -806,6 +857,7 @@
       <param.LogAllIOValues />
       <param.DetectOverflows />
       <param.LogHistogram />
+      <param.ShowCoverage />
       <param.ExcludedFixedPointVerificationFiles />
       <param.ExcludedFixedPointSimulationFiles />
       <param.InstrumentedBuildChecksum />
@@ -830,17 +882,19 @@
       <var.snapshotChecksum />
       <var.functionBlockSid />
       <param.fptSignedness />
+      <var.FixedPointAnalysisMode />
+      <param.FixedPointUseDesignRanges />
     </unset>
     <fileset.entrypoints>
-      <file custom-data-expanded="false" value="${PROJECT_ROOT}/HelperPLLClassSim.m">
-        <Marker>1477333850665</Marker>
+      <file custom-data-expanded="false" value="${PROJECT_ROOT}\HelperPLLClassSim.m">
+        <Marker>1477420681724</Marker>
       </file>
     </fileset.entrypoints>
     <fileset.testbench>
-      <file>${PROJECT_ROOT}/audioPLLClassExample.m</file>
+      <file>${PROJECT_ROOT}\audioPLLClassExample.m</file>
     </fileset.testbench>
     <fileset.inputtypes>
-      <file custom-data-expanded="false" value="${PROJECT_ROOT}/HelperPLLClassSim.m">
+      <file custom-data-expanded="false" value="${PROJECT_ROOT}\HelperPLLClassSim.m">
         <Inputs fileName="HelperPLLClassSim.m" functionName="HelperPLLClassSim">
           <Input Name="in" typeId="0" />
           <Input Name="Fs" typeId="1" />
@@ -867,11 +921,11 @@
       </file>
     </fileset.inputtypes>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}/codegen/lib/HelperPLLClassSim" name="HelperPLLClassSim.a" optional="false">/Users/johannesbohler/Documents/MATLAB/ASTPLL/codegen/lib/HelperPLLClassSim/HelperPLLClassSim.a</file>
+      <file location="${PROJECT_ROOT}\codegen\lib\HelperPLLClassSim" name="HelperPLLClassSim.lib" optional="false">c:\Users\Johann\Documents\MATLAB\ASTPLL\codegen\lib\HelperPLLClassSim\HelperPLLClassSim.lib</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>/Applications/MATLAB_R2016a.app</root>
+      <root>C:\Program Files\MATLAB\R2016b</root>
       <toolboxes>
         <toolbox name="fixedpoint" />
         <toolbox name="matlabcoder" />
@@ -900,18 +954,18 @@
       </toolbox>
     </matlab>
     <platform>
-      <unix>true</unix>
-      <mac>true</mac>
-      <windows>false</windows>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
       <win2k>false</win2k>
       <winxp>false</winxp>
       <vista>false</vista>
       <linux>false</linux>
       <solaris>false</solaris>
-      <osver>10.12.1</osver>
+      <osver>6.2</osver>
       <os32>false</os32>
       <os64>true</os64>
-      <arch>maci64</arch>
+      <arch>win64</arch>
       <matlab>true</matlab>
     </platform>
   </configuration>
