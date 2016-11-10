@@ -98,11 +98,11 @@ if ~isempty(pllTracker1)
     pllTracker1.fCenter = fCenter(1);
     pllTracker1.Kd    = Kd(1);
     pitch(:,1) = step(pllTracker1,x1);
-    pitch(:,1) = step(fHP1,pitch(:,1));
+    %pitch(:,1) = step(fHP1,pitch(:,1));
     pllTracker2.fCenter = fCenter(2);
     pllTracker2.Kd    = Kd(2);
     pitch(:,2) = step(pllTracker2,x1);
-    pitch(:,2) = step(fHP2,pitch(:,2));
+    %pitch(:,2) = step(fHP2,pitch(:,2));
     
     
     x2 = step(filter2, x);
@@ -112,12 +112,12 @@ if ~isempty(pllTracker1)
     pllTracker3.fCenter = fCenter(3);
     pllTracker3.Kd    = Kd(3);
     pitch(:,3) = step(pllTracker3,x2);
-    pitch(:,3) = step(fHP3,pitch(:,3));
+    %pitch(:,3) = step(fHP3,pitch(:,3));
     
     pllTracker4.fCenter = fCenter(4);
     pllTracker4.Kd    = Kd(4);
     pitch(:,4) = step(pllTracker4,x2);
-    pitch(:,4) = step(fHP4,pitch(:,4));
+    %pitch(:,4) = step(fHP4,pitch(:,4));
     
     
     x3 = step(filter3, x);
@@ -127,12 +127,12 @@ if ~isempty(pllTracker1)
     pllTracker5.fCenter = fCenter(5);
     pllTracker5.Kd    = Kd(5);
     pitch(:,5) = step(pllTracker5,x3);
-    pitch(:,5) = step(fHP5,pitch(:,5));
+    %pitch(:,5) = step(fHP5,pitch(:,5));
     
     pllTracker6.fCenter = fCenter(6);
     pllTracker6.Kd    = Kd(6);
     pitch(:,6) = step(pllTracker6,x3);
-    pitch(:,6) = step(fHP6,pitch(:,6));
+    %pitch(:,6) = step(fHP6,pitch(:,6));
     
     x4 = step(filter4, x);
     x4 = step(filter8, x4);
@@ -141,12 +141,12 @@ if ~isempty(pllTracker1)
     pllTracker7.fCenter = fCenter(7);
     pllTracker7.Kd    = Kd(7);
     pitch(:,7) = step(pllTracker7,x4);
-    pitch(:,7) = step(fHP7,pitch(:,7));
+    %pitch(:,7) = step(fHP7,pitch(:,7));
      
     pllTracker8.fCenter = fCenter(8);
     pllTracker8.Kd    = Kd(8);
     pitch(:,8) = step(pllTracker8,x4);
-    pitch(:,8) = step(fHP8,pitch(:,8));
+    %pitch(:,8) = step(fHP8,pitch(:,8));
 end
 
 % if ~isempty(pllTracker)
