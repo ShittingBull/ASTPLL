@@ -20,7 +20,7 @@ classdef EnvDetector < audioPlugin & matlab.System
             env = zeros(samples,1);
             tmp = zeros(samples,1);
             persistent fs tauAttack tauRelease
-            fs = 44100;
+            fs = plugin.getSampleRate;
             tauAttack = 0.05;
             tauRelease = 0.1;
             

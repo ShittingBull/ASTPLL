@@ -1,14 +1,14 @@
-function [pitch] = trackPitch(x, bufferSize, fCenter, filterFCenter,Kd, Fs, resetFlag)
+function [pitch] = trackPitch(x, bufferSize, fCenter, filterFCenter,Kd, Fs, resetFlag, stopFlag)
 % shiftPitch This function is used in audioPitchShifterExample
 
 %  Copyright 2015 The MathWorks, Inc.
 
 %#codegen
-pitch = zeros(bufferSize,8);
+pitch = zeros(bufferSize * 2,8);
 persistent pllTracker1 pllTracker2 pllTracker3 pllTracker4 pllTracker5 pllTracker6 pllTracker7 pllTracker8;
 persistent envDet1 envDet2 envDet3 envDet4 a b;
-persistent filter1 filter2 filter3 filter4 filter5 filter6 filter7 filter8 numFilters numSoS;
-persistent fHP1 fHP2 fHP3 fHP4 fHP5 fHP6 fHP7 fHP8;
+persistent filterHP1 filterHP2 filterHP3 filterHP4 filterLP1 filterLP2 filterLP3 filterLP4 numFilters numSoS;
+persistent fLP1 fLP2 fLP3 fLP4 fLP5 fLP6 fLP7 fLP8 SRC1 SRC2 SRC3 SRC4 PLLFs;
 numFilters = 4;
 %a = zeros(numFilters, numSoS * 2+1);
 %b = zeros(numFilters, numSoS * 2+1);
@@ -24,7 +24,8 @@ a2 = [1 -7.77626751398240 26.5687745122113 -52.0918015093737 64.1023915166688 -5
 a3 = [1 -7.33210471682983 23.9413538304971 -45.4428472380410 54.8218679481891 -43.0399744346667 21.4771160668729 -6.23031093089821 0.805001630715167];
 a4 = [1 -5.86570987064921 16.4000193694953 -28.1288222825564 32.2370922205985 -25.2298762853053 13.1936641853327 -4.23338583918038 0.648421774427983];
 bLp = [0.0110759647918990 0.0110759647918990];
-aLp = [1 -0.977848070416202]
+aLp = [1 -0.977848070416202];
+PLLFs = Fs * 2;
 
 if isempty(pllTracker1)
     
@@ -33,44 +34,110 @@ if isempty(pllTracker1)
     %[b(2,:), a(2,:)] = ellip(3, 1, 100, [(filterFCenter_(3)/(44100/2)) (filterFCenter_(4) /(44100/2))]); 
     %[b(3,:), a(3,:)] = ellip(3, 1, 100, [(filterFCenter_(5)/(44100/2)) (filterFCenter_(6) /(44100/2))]); 
     %[b(4,:), a(4,:)] = ellip(3, 1, 100, [(filterFCenter_(7)/(44100/2)) (filterFCenter_(8) /(44100/2))]); 
-    filter1 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b1, 'Denominator', a1);
-    filter2 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b2, 'Denominator', a2);
-    filter3 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b3, 'Denominator', a3);
-    filter4 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b4, 'Denominator', a4);
-    filter5 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b1, 'Denominator', a1);
-    filter6 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b2, 'Denominator', a2);
-    filter7 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b3, 'Denominator', a3);
-    filter8 = dsp.IIRFilter('Structure', 'Direct form I', 'Numerator', b4, 'Denominator', a4);
-    fHP1 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
-    fHP2 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
-    fHP3 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
-    fHP4 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
-    fHP5 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
-    fHP6 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
-    fHP7 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
-    fHP8 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
     
     
+    N     = 10;    % Order
+    Fs_d    = Fs;
+    Fpass = Fs_d / 4;  % Passband Frequency
+    Astop = 80;    % Stopband Attenuation (dB)
+    Apass = 1;     % Passband Ripple (dB)
+    h = fdesign.lowpass('n,fp,ap,ast', N, Fpass, Apass, Astop, Fs_d);
+
+    filterLP4 = design(h, 'ellip', ...
+        'SystemObject', true);
+    Fs_d    = Fs/2;
+    Fpass = Fs_d / 4;  % Passband Frequency
+    h = fdesign.lowpass('n,fp,ap,ast', N, Fpass, Apass, Astop, Fs_d);
+    filterLP3 = design(h, 'ellip', ...
+        'SystemObject', true);
+    Fs_d    = Fs/4;
+    Fpass = Fs_d / 4;  % Passband Frequency
+    h = fdesign.lowpass('n,fp,ap,ast', N, Fpass, Apass, Astop, Fs_d);
+    filterLP2 = design(h, 'ellip', ...
+        'SystemObject', true);
+    Fs_d    = Fs/8;
+    Fpass = Fs_d / 4;  % Passband Frequency
+    h = fdesign.lowpass('n,fp,ap,ast', N, Fpass, Apass, Astop, Fs_d);
+    filterLP1 = design(h, 'ellip', ...
+        'SystemObject', true);
+    
+    
+    SRC1 = dsp.SampleRateConverter('Bandwidth',160,...
+    'InputSampleRate',320,'OutputSampleRate',PLLFs);
+    SRC2 = dsp.SampleRateConverter('Bandwidth',320,...
+    'InputSampleRate',640,'OutputSampleRate',PLLFs);
+    SRC3 = dsp.SampleRateConverter('Bandwidth',640,...
+    'InputSampleRate',1280,'OutputSampleRate',PLLFs);
+    SRC4 = dsp.SampleRateConverter('Bandwidth',1280,...
+    'InputSampleRate',2560,'OutputSampleRate',PLLFs);
+    
+    
+    N     = 10;    % Order
+    Fs_d    = Fs;
+    Fpass = Fs_d / 4;  % Passband Frequency
+    Astop = 80;    % Stopband Attenuation (dB)
+    Apass = 1;     % Passband Ripple (dB)
+
+    h = fdesign.highpass('n,fp,ast,ap', N, Fpass, Astop, Apass, Fs_d);
+    
+    filterHP4 = design(h, 'ellip', ...
+        'SystemObject', true);
+    Fs_d    = Fs/2;
+    Fpass = Fs_d / 4;  % Passband Frequency
+    h = fdesign.highpass('n,fp,ast,ap', N, Fpass, Astop, Apass, Fs_d);
+    filterHP3 = design(h, 'ellip', ...
+        'SystemObject', true);
+    Fs_d    = Fs/4;
+    Fpass = Fs_d / 4;  % Passband Frequency
+    h = fdesign.highpass('n,fp,ast,ap', N, Fpass, Astop, Apass, Fs_d);
+    filterHP2 = design(h, 'ellip', ...
+        'SystemObject', true);
+    Fs_d    = Fs/8;
+    Fpass = Fs_d / 4;  % Passband Frequency
+    h = fdesign.highpass('n,fp,ast,ap', N, Fpass, Astop, Apass, Fs_d);
+    filterHP1 = design(h, 'ellip', ...
+        'SystemObject', true);
+    
+
+   
+    
+   
+    fLP1 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+    fLP2 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+    fLP3 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+    fLP4 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+    fLP5 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+    fLP6 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+    fLP7 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+    fLP8 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+    
+   
     envDet1 = EnvDetector;
-    pllTracker1 = PLLClass(fCenter(1),Kd(1),Fs);
-    setSampleRate(pllTracker1,Fs);
-    pllTracker2 = PLLClass(fCenter(2),Kd(2),Fs);
-    setSampleRate(pllTracker2,Fs);
+    pllTracker1 = PLLClass(fCenter(1),Kd(1),PLLFs);
+    setSampleRate(pllTracker1,PLLFs);
+    pllTracker2 = PLLClass(fCenter(2),Kd(2),PLLFs);
+    setSampleRate(pllTracker2,PLLFs);
     envDet2 = EnvDetector;
-    pllTracker3 = PLLClass(fCenter(3),Kd(3),Fs);
-    setSampleRate(pllTracker3,Fs);
-    pllTracker4 = PLLClass(fCenter(4),Kd(4),Fs);
-    setSampleRate(pllTracker4,Fs);
+    pllTracker3 = PLLClass(fCenter(3),Kd(3),PLLFs);
+    setSampleRate(pllTracker3,PLLFs);
+    pllTracker4 = PLLClass(fCenter(4),Kd(4),PLLFs);
+    setSampleRate(pllTracker4,PLLFs);
     envDet3 = EnvDetector;
-    pllTracker5 = PLLClass(fCenter(5),Kd(5),Fs);
-    setSampleRate(pllTracker5,Fs);
-    pllTracker6 = PLLClass(fCenter(6),Kd(6),Fs);
-    setSampleRate(pllTracker6,Fs);
+    pllTracker5 = PLLClass(fCenter(5),Kd(5),PLLFs);
+    setSampleRate(pllTracker5,PLLFs);
+    pllTracker6 = PLLClass(fCenter(6),Kd(6),PLLFs);
+    setSampleRate(pllTracker6,PLLFs);
     envDet4 = EnvDetector;
-    pllTracker7 = PLLClass(fCenter(7),Kd(7),Fs);
-    setSampleRate(pllTracker7,Fs);
-    pllTracker8 = PLLClass(fCenter(8),Kd(8),Fs);
-    setSampleRate(pllTracker8,Fs);
+    pllTracker7 = PLLClass(fCenter(7),Kd(7),PLLFs);
+    setSampleRate(pllTracker7,PLLFs);
+    pllTracker8 = PLLClass(fCenter(8),Kd(8),PLLFs);
+    setSampleRate(pllTracker8,PLLFs);
+    
+     
+    setSampleRate(envDet1,PLLFs);
+    setSampleRate(envDet2,PLLFs);
+    setSampleRate(envDet3,PLLFs);
+    setSampleRate(envDet4,PLLFs);
     
 end
 
@@ -91,62 +158,139 @@ if ~isempty(pllTracker1)
         return;
     end
     
-    x1 = step(filter1, x);
-    x1 = step(filter5, x1);
+    if stopFlag
+        release(pllTracker1);
+        release(pllTracker2);
+        release(pllTracker3);
+        release(pllTracker4);
+        release(pllTracker5);
+        release(pllTracker6);
+        release(pllTracker7);
+        release(pllTracker8);
+        release(envDet1);
+        release(envDet2);
+        release(envDet3);
+        release(envDet4);
+        release(filterLP1);
+        release(filterLP2);
+        release(filterLP3);
+        release(filterLP4);
+        release(filterHP1);
+        release(filterHP2);
+        release(filterHP3);
+        release(filterHP4);
+        release(fLP1);
+        release(fLP2);
+        release(fLP3);
+        release(fLP4);
+        release(fLP5);
+        release(fLP6);
+        release(fLP7);
+        release(fLP8);
+        
+    end
+    
+    
+    x4 = step(filterHP4, x);
+    xlp4 = step(filterLP4,x);
+   
+    x3in = downsample(xlp4,2);
+    x3 = step(filterHP3, x3in);
+    xlp3 = step(filterLP3,x3in);
+    
+    x2in = downsample(xlp3,2);
+    x2 = step(filterHP2, x2in);
+    xlp2 = step(filterLP2,x2in);
+    
+    x1in = downsample(xlp2,2);
+    x1 = step(filterHP1, x1in);
+    %x2lp = step(filterLP1,x1in);
+    
+    
+      
+  
+    
+    x1 = step(SRC1,x1);
+    x2 = step(SRC2,x2);
+    x3 = step(SRC3,x3);
+    x4 = step(SRC4,x4);
+  
+     
     x1 = step(envDet1,x1);
+    x2 = step(envDet2,x2);
+    x3 = step(envDet3,x3);
+    x4 = step(envDet4,x4);
+  
     
     pllTracker1.fCenter = fCenter(1);
     pllTracker1.Kd    = Kd(1);
-    pitch(:,1) = step(pllTracker1,x1);
-    pitch(:,1) = step(fHP1,pitch(:,1));
+    temp1 = step(pllTracker1,x1);
+    %pitch(:,1) = downsample(temp1,8);
+    pitch(:,1) = temp1;
+    %pitch(:,1) = step(fLP1,pitch(:,1));
     pllTracker2.fCenter = fCenter(2);
     pllTracker2.Kd    = Kd(2);
-    pitch(:,2) = step(pllTracker2,x1);
-    pitch(:,2) = step(fHP2,pitch(:,2));
+    temp2 = step(pllTracker2,x1);
+    pitch(:,2) = temp2;
+    %pitch(:,2) = step(fLP2,pitch(:,2));
     
-    
-    x2 = step(filter2, x);
-    x2 = step(filter6, x2);
-    x2 = step(envDet2,x2);
     
     pllTracker3.fCenter = fCenter(3);
     pllTracker3.Kd    = Kd(3);
-    pitch(:,3) = step(pllTracker3,x2);
-    pitch(:,3) = step(fHP3,pitch(:,3));
+    temp3 = step(pllTracker3,x2);
+    pitch(:,3) = temp3;
+    %pitch(:,3) = downsample(temp3,2);
+    %pitch(:,3) = step(fLP3,pitch(:,3));
     
     pllTracker4.fCenter = fCenter(4);
     pllTracker4.Kd    = Kd(4);
-    pitch(:,4) = step(pllTracker4,x2);
-    pitch(:,4) = step(fHP4,pitch(:,4));
+    temp4 = step(pllTracker4,x2);
+    pitch(:,4) = temp4;
+    %pitch(:,4) = downsample(temp4,2);
+    %pitch(:,4) = step(fLP4,pitch(:,4));
     
-    
-    x3 = step(filter3, x);
-    x3 = step(filter7, x3);
-    x3 = step(envDet3,x3);
+   
     
     pllTracker5.fCenter = fCenter(5);
     pllTracker5.Kd    = Kd(5);
-    pitch(:,5) = step(pllTracker5,x3);
-    pitch(:,5) = step(fHP5,pitch(:,5));
+    temp5 = step(pllTracker5,x3);
+    pitch(:,5) = temp5;
+    %pitch(:,5) = downsample(temp5,4);
+    %pitch(:,5) = step(fLP5,pitch(:,5));
     
     pllTracker6.fCenter = fCenter(6);
     pllTracker6.Kd    = Kd(6);
-    pitch(:,6) = step(pllTracker6,x3);
-    pitch(:,6) = step(fHP6,pitch(:,6));
-    
-    x4 = step(filter4, x);
-    x4 = step(filter8, x4);
-    x4 = step(envDet4,x4);
+    temp6 = step(pllTracker6,x3);
+    pitch(:,6) = temp6;
+    %pitch(:,6) = downsample(temp6,4);
+    %pitch(:,6) = step(fLP6,pitch(:,6));
     
     pllTracker7.fCenter = fCenter(7);
     pllTracker7.Kd    = Kd(7);
-    pitch(:,7) = step(pllTracker7,x4);
-    pitch(:,7) = step(fHP7,pitch(:,7));
+    temp7 = step(pllTracker7,x4);
+    pitch(:,7) = temp7;
+    %pitch(:,7) = downsample(temp7,8);
+    %pitch(:,7) = step(fLP7,pitch(:,7));
      
     pllTracker8.fCenter = fCenter(8);
     pllTracker8.Kd    = Kd(8);
-    pitch(:,8) = step(pllTracker8,x4);
-    pitch(:,8) = step(fHP8,pitch(:,8));
+    temp8 = step(pllTracker8,x4);
+    pitch(:,8) = temp8;
+    %pitch(:,8) = downsample(temp8,8);
+    %pitch(:,8) = step(fLP8,pitch(:,8));
+    
+%     subplot(4,1,1);
+%     hold on;
+%     plot(x1)
+%     subplot(4,1,2);
+%     hold on;
+%     plot(x2);
+%     subplot(4,1,3);
+%     hold on;
+%     plot(x3);
+%     subplot(4,1,4);
+%     hold on;
+%     plot(x4);
 end
 
 % if ~isempty(pllTracker)

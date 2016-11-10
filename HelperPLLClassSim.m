@@ -10,13 +10,19 @@ function [input,pitch,pauseSim,stopSim, resetSim, output] = HelperPLLClassSim(in
 
 %#codegen
 
-persistent  player fCenter filterFCenter Kd
+persistent  player fCenter filterFCenter Kd SRC
 %frameSize = 4096;
 if isempty(player)
     %reader = dsp.AudioFileReader('AR_Lick11_picked_N.wav',...
     %5                             'SamplesPerFrame',256,'PlayCount',Inf,'OutputDataType', 'double');
     %player = audioDeviceWriter('SampleRate',reader.SampleRate,'BufferSize',256);
-    player = audioDeviceWriter('SampleRate',44100/5,'BufferSize',256);
+    player = audioDeviceWriter('SampleRate',44100,'BufferSize',4410);
+    
+    SRC = dsp.SampleRateConverter('Bandwidth',2400,...
+            'InputSampleRate',44.1e3,'OutputSampleRate',2560);
+    [L,M] = getRateChangeFactors(SRC);
+
+    
     startFreq = 80.06;
     fCenter = zeros(1,8);
     filterFCenter = zeros(1,8);
@@ -36,12 +42,13 @@ end
 
 input = zeros(256,1);
 output = zeros(256,1);
-pitch = zeros(256,1);
+pitch = zeros(256 * 2,1);
 pauseSim = simControlFlags.pauseSim;
 stopSim = simControlFlags.stopSim;
 resetSim = simControlFlags.resetObj;
 
-if simControlFlags.stopSim
+if  stopSim
+    trackPitch(input,256,fCenter,filterFCenter,Kd,Fs,false,true);
     return;  % Stop the simulation
 end
 if simControlFlags.pauseSim
@@ -54,19 +61,19 @@ if ~isempty(paramNew)
         fCenter(i)   = paramNew((i - 1) * 2 + 1);
         Kd(i) = paramNew(i * 2);
     end
-    
-    if simControlFlags.resetObj % reset System objects
+       
+    if resetSim % reset System objects
         %reset(reader);
         % Reset pitch shifter
-        trackPitch(input,256,fCenter,filterFCenter,Kd,Fs,true);
+        trackPitch(input,256,fCenter,filterFCenter,Kd,Fs,true,false);
     end
 end
-
+ind = step(SRC,in);
 %x = step(reader);
-pitch =  trackPitch(in,256,fCenter, filterFCenter, Kd,Fs);
-step(player,in);
+pitch =  trackPitch(ind,256,fCenter, filterFCenter, Kd,Fs,false,false);
+%step(player,in); 
 
-input  = in(:,1);
-output = in(:,1);
+input  = ind(:,1);
+output = ind(:,1);
 
 end
