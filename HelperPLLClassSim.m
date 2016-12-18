@@ -48,8 +48,8 @@ stopSim = simControlFlags.stopSim;
 resetSim = simControlFlags.resetObj;
 
 if  stopSim
-    trackPitch(input,256,fCenter,filterFCenter,Kd,Fs,false,true);
-    %trackPitch_least_pth(input,256,fCenter,filterFCenter,Kd,Fs,false,true);
+    %trackPitch(input,256,fCenter,filterFCenter,Kd,Fs,false,true);
+    trackPitch_least_pth(input,256,fCenter,filterFCenter,Kd,Fs,false,true);
     return;  % Stop the simulation
 end
 if simControlFlags.pauseSim
@@ -66,14 +66,14 @@ if ~isempty(paramNew)
     if resetSim % reset System objects
         %reset(reader);
         % Reset pitch shifter
-        trackPitch(input,256,fCenter,filterFCenter,Kd,Fs,true,false);
-        %trackPitch_least_pth(input,256,fCenter,filterFCenter,Kd,Fs,true,false);
+        %trackPitch(input,256,fCenter,filterFCenter,Kd,Fs,true,false);
+        trackPitch_least_pth(input,256,fCenter,filterFCenter,Kd,Fs,true,false);
     end
 end
 ind = step(SRC,in);
 %x = step(reader);
-pitch =  trackPitch(ind,256,fCenter, filterFCenter, Kd,Fs,false,false);
-%pitch = trackPitch_least_pth(ind,256,fCenter,filterFCenter,Kd,Fs,false,false);
+%pitch =  trackPitch(ind,256,fCenter, filterFCenter, Kd,Fs,false,false);
+pitch = trackPitch_least_pth(ind,256,fCenter,filterFCenter,Kd,Fs,false,false);
 step(player,in); 
 
 input  = ind(:,1);
