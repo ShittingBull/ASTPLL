@@ -18,7 +18,7 @@ if isempty(player)
     %player = audioDeviceWriter('SampleRate',reader.SampleRate,'BufferSize',256);
     player = audioDeviceWriter('SampleRate',44100,'BufferSize',4410);
     
-    SRC = dsp.SampleRateConverter('Bandwidth',2560/2,...
+    SRC = dsp.SampleRateConverter('Bandwidth',2200,...
             'InputSampleRate',44.1e3,'OutputSampleRate',2560);
     [L,M] = getRateChangeFactors(SRC);
 
@@ -42,7 +42,7 @@ end
 
 input = zeros(256,1);
 output = zeros(256,1);
-pitch = zeros(256 * 2,1);
+pitch = zeros(256 * 2 / 8,1);
 pauseSim = simControlFlags.pauseSim;
 stopSim = simControlFlags.stopSim;
 resetSim = simControlFlags.resetObj;
