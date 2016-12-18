@@ -4,7 +4,7 @@ function [pitch] = trackPitch(x, bufferSize, fCenter, filterFCenter,Kd, Fs, rese
 %  Copyright 2015 The MathWorks, Inc.
 
 %#codegen
-pitch = zeros(bufferSize,8);
+pitch = zeros(bufferSize / 8,8);
 persistent pllTracker1 pllTracker2 pllTracker3 pllTracker4 pllTracker5 pllTracker6 pllTracker7 pllTracker8;
 persistent envDet1 envDet2 envDet3 envDet4 a b;
 persistent filterHP1 filterHP2 filterHP3 filterHP4 filterLP1 filterLP2 filterLP3 filterLP4 numFilters numSoS;
@@ -104,14 +104,14 @@ if isempty(pllTracker1)
    
     
    
-    fLP1 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
-    fLP2 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
-    fLP3 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
-    fLP4 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
-    fLP5 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
-    fLP6 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
-    fLP7 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
-    fLP8 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+%     fLP1 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+%     fLP2 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+%     fLP3 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+%     fLP4 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+%     fLP5 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+%     fLP6 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+%     fLP7 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
+%     fLP8 = dsp.IIRFilter('Structure', 'Direct form II', 'Numerator',bLp , 'Denominator', aLp);
     
    
     envDet1 = EnvDetector;
@@ -218,13 +218,13 @@ if ~isempty(pllTracker1)
     
    
     
-    x1 = step(SRC1,x1);
+    %x1 = step(SRC1,x1);
    
-    x2 = step(SRC2,x2);
+    %x2 = step(SRC2,x2);
     
-    x3 = step(SRC3,x3);
+    %x3 = step(SRC3,x3);
    
-    x4 = step(SRC4,x4);
+    %x4 = step(SRC4,x4);
     
     
     
@@ -256,6 +256,7 @@ if ~isempty(pllTracker1)
     pllTracker3.fCenter = fCenter(3);
     pllTracker3.Kd    = Kd(3) * KdFactor;
     temp3 = step(pllTracker3,x2);
+    temp3 = downsample(temp3,2);
     pitch(:,3) = temp3;
     %pitch(:,3) = downsample(temp3,2);
     %pitch(:,3) = step(fLP3,pitch(:,3));
@@ -263,6 +264,7 @@ if ~isempty(pllTracker1)
     pllTracker4.fCenter = fCenter(4);
     pllTracker4.Kd    = Kd(4) * KdFactor;
     temp4 = step(pllTracker4,x2);
+    temp4 = downsample(temp4,2);
     pitch(:,4) = temp4;
     %pitch(:,4) = downsample(temp4,2);
     %pitch(:,4) = step(fLP4,pitch(:,4));
@@ -272,6 +274,7 @@ if ~isempty(pllTracker1)
     pllTracker5.fCenter = fCenter(5);
     pllTracker5.Kd    = Kd(5);
     temp5 = step(pllTracker5,x3);
+    temp5 = downsample(temp5,4);
     pitch(:,5) = temp5;
     %pitch(:,5) = downsample(temp5,4);
     %pitch(:,5) = step(fLP5,pitch(:,5));
@@ -279,6 +282,7 @@ if ~isempty(pllTracker1)
     pllTracker6.fCenter = fCenter(6);
     pllTracker6.Kd    = Kd(6);
     temp6 = step(pllTracker6,x3);
+    temp6 = downsample(temp6,4);
     pitch(:,6) = temp6;
     %pitch(:,6) = downsample(temp6,4);
     %pitch(:,6) = step(fLP6,pitch(:,6));
@@ -286,6 +290,7 @@ if ~isempty(pllTracker1)
     pllTracker7.fCenter = fCenter(7);
     pllTracker7.Kd    = Kd(7);
     temp7 = step(pllTracker7,x4);
+    temp7 = downsample(temp7,8);
     pitch(:,7) = temp7;
     %pitch(:,7) = downsample(temp7,8);
     %pitch(:,7) = step(fLP7,pitch(:,7));
@@ -293,6 +298,7 @@ if ~isempty(pllTracker1)
     pllTracker8.fCenter = fCenter(8);
     pllTracker8.Kd    = Kd(8);
     temp8 = step(pllTracker8,x4);
+    temp8 = downsample(temp8,8);
     pitch(:,8) = temp8;
     %pitch(:,8) = downsample(temp8,8);
     %pitch(:,8) = step(fLP8,pitch(:,8));

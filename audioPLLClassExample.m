@@ -32,14 +32,14 @@ end
 
 FS = 2560;
 pitchDownSampleFactor = 44100 / (FS);
-displayDownSampleFactor = 2 ;
+displayDownSampleFactor = 1 ;
 screen = get(0,'ScreenSize');
 outerSize = min((screen(4)-40)/2, 512);
     
 % Create scopes only if plotResults is true
 if showVisual     
     scope = dsp.TimeScope('TimeSpan',4,'YLimits',[0,1400],...
-        'SampleRate',FS/displayDownSampleFactor,'LayoutDimensions',[1 1],...
+        'SampleRate',FS/displayDownSampleFactor/8,'LayoutDimensions',[1 1],...
         'NumInputPorts',1,'TimeSpanOverrunAction','Scroll');
     scope.ActiveDisplay = 1;
     scope.Title = 'Pitch';
