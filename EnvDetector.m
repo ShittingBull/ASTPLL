@@ -13,7 +13,7 @@ classdef EnvDetector < audioPlugin & matlab.System
     end
     
     methods  (Access = protected)
-        function out = stepImpl(plugin, in)
+        function [out, env] = stepImpl(plugin, in)
            
             [samples, channels] = size(in);
             out = zeros(samples,1);

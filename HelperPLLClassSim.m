@@ -18,7 +18,7 @@ if isempty(player)
     %player = audioDeviceWriter('SampleRate',reader.SampleRate,'BufferSize',256);
     player = audioDeviceWriter('SampleRate',44100,'BufferSize',4410);
     
-    SRC = dsp.SampleRateConverter('Bandwidth',2400,...
+    SRC = dsp.SampleRateConverter('Bandwidth',2560/2,...
             'InputSampleRate',44.1e3,'OutputSampleRate',2560);
     [L,M] = getRateChangeFactors(SRC);
 
@@ -49,6 +49,7 @@ resetSim = simControlFlags.resetObj;
 
 if  stopSim
     trackPitch(input,256,fCenter,filterFCenter,Kd,Fs,false,true);
+    %trackPitch_least_pth(input,256,fCenter,filterFCenter,Kd,Fs,false,true);
     return;  % Stop the simulation
 end
 if simControlFlags.pauseSim
@@ -66,12 +67,14 @@ if ~isempty(paramNew)
         %reset(reader);
         % Reset pitch shifter
         trackPitch(input,256,fCenter,filterFCenter,Kd,Fs,true,false);
+        %trackPitch_least_pth(input,256,fCenter,filterFCenter,Kd,Fs,true,false);
     end
 end
 ind = step(SRC,in);
 %x = step(reader);
 pitch =  trackPitch(ind,256,fCenter, filterFCenter, Kd,Fs,false,false);
-%step(player,in); 
+%pitch = trackPitch_least_pth(ind,256,fCenter,filterFCenter,Kd,Fs,false,false);
+step(player,in); 
 
 input  = ind(:,1);
 output = ind(:,1);

@@ -4,11 +4,11 @@ function [pitch] = trackPitch(x, bufferSize, fCenter, filterFCenter,Kd, Fs, rese
 %  Copyright 2015 The MathWorks, Inc.
 
 %#codegen
-pitch = zeros(bufferSize * 2,8);
+pitch = zeros(bufferSize,8);
 persistent pllTracker1 pllTracker2 pllTracker3 pllTracker4 pllTracker5 pllTracker6 pllTracker7 pllTracker8;
 persistent envDet1 envDet2 envDet3 envDet4 a b;
 persistent filterHP1 filterHP2 filterHP3 filterHP4 filterLP1 filterLP2 filterLP3 filterLP4 numFilters numSoS;
-persistent fLP1 fLP2 fLP3 fLP4 fLP5 fLP6 fLP7 fLP8 SRC1 SRC2 SRC3 SRC4 PLLFs;
+persistent fLP1 fLP2 fLP3 fLP4 fLP5 fLP6 fLP7 fLP8 SRC1 SRC2 SRC3 SRC4 PLLFs envDet5 envDet6;
 numFilters = 4;
 %a = zeros(numFilters, numSoS * 2+1);
 %b = zeros(numFilters, numSoS * 2+1);
@@ -25,8 +25,7 @@ a3 = [1 -7.33210471682983 23.9413538304971 -45.4428472380410 54.8218679481891 -4
 a4 = [1 -5.86570987064921 16.4000193694953 -28.1288222825564 32.2370922205985 -25.2298762853053 13.1936641853327 -4.23338583918038 0.648421774427983];
 bLp = [0.0110759647918990 0.0110759647918990];
 aLp = [1 -0.977848070416202];
-PLLFs = Fs * 2;
-
+PLLFs = Fs;
 if isempty(pllTracker1)
     
     %[b(i,:), a(i,:)] = ellip(3, 1, 100, [80 160]) 
@@ -35,53 +34,56 @@ if isempty(pllTracker1)
     %[b(3,:), a(3,:)] = ellip(3, 1, 100, [(filterFCenter_(5)/(44100/2)) (filterFCenter_(6) /(44100/2))]); 
     %[b(4,:), a(4,:)] = ellip(3, 1, 100, [(filterFCenter_(7)/(44100/2)) (filterFCenter_(8) /(44100/2))]); 
     
-    
-    N     = 10;    % Order
+    N     = 8;    % Order
     Fs_d    = Fs;
     Fpass = Fs_d / 4;  % Passband Frequency
     Astop = 80;    % Stopband Attenuation (dB)
     Apass = 1;     % Passband Ripple (dB)
     h = fdesign.lowpass('n,fp,ap,ast', N, Fpass, Apass, Astop, Fs_d);
 
-    filterLP4 = design(h, 'ellip', ...
-        'SystemObject', true);
+    filterLP4 = design(h, 'ellip', 'SystemObject', true);
+    
+    %filterLP4 = dsp.IIRHalfbandDecimator('TransitionWidth',100,'SampleRate',Fs_d);
+    
     Fs_d    = Fs/2;
-    Fpass = Fs_d / 4;  % Passband Frequency
+    Fpass = Fs_d / 4  ;  % Passband Frequency
     h = fdesign.lowpass('n,fp,ap,ast', N, Fpass, Apass, Astop, Fs_d);
-    filterLP3 = design(h, 'ellip', ...
-        'SystemObject', true);
+    filterLP3 = design(h, 'ellip','SystemObject', true);
+    %filterLP3 = dsp.IIRHalfbandDecimator('TransitionWidth',50,'SampleRate',Fs_d);
+    
     Fs_d    = Fs/4;
     Fpass = Fs_d / 4;  % Passband Frequency
     h = fdesign.lowpass('n,fp,ap,ast', N, Fpass, Apass, Astop, Fs_d);
-    filterLP2 = design(h, 'ellip', ...
-        'SystemObject', true);
+    filterLP2 = design(h, 'ellip','SystemObject', true);
+    %filterLP2 = dsp.IIRHalfbandDecimator();
+    %filterLP2 = dsp.IIRHalfbandDecimator('TransitionWidth',25,'SampleRate',Fs_d);
+    
     Fs_d    = Fs/8;
     Fpass = Fs_d / 4;  % Passband Frequency
     h = fdesign.lowpass('n,fp,ap,ast', N, Fpass, Apass, Astop, Fs_d);
-    filterLP1 = design(h, 'ellip', ...
-        'SystemObject', true);
+    filterLP1 = design(h, 'ellip', 'SystemObject', true);
     
     
-    SRC1 = dsp.SampleRateConverter('Bandwidth',160,...
+    SRC1 = dsp.SampleRateConverter('Bandwidth',310,...
     'InputSampleRate',320,'OutputSampleRate',PLLFs);
-    SRC2 = dsp.SampleRateConverter('Bandwidth',320,...
+    SRC2 = dsp.SampleRateConverter('Bandwidth',620,...
     'InputSampleRate',640,'OutputSampleRate',PLLFs);
-    SRC3 = dsp.SampleRateConverter('Bandwidth',640,...
+    SRC3 = dsp.SampleRateConverter('Bandwidth',1240,...
     'InputSampleRate',1280,'OutputSampleRate',PLLFs);
-    SRC4 = dsp.SampleRateConverter('Bandwidth',1280,...
+    SRC4 = dsp.SampleRateConverter('Bandwidth',2480,...
     'InputSampleRate',2560,'OutputSampleRate',PLLFs);
     
     
-    N     = 10;    % Order
+    N     = 6;    % Order
     Fs_d    = Fs;
     Fpass = Fs_d / 4;  % Passband Frequency
     Astop = 80;    % Stopband Attenuation (dB)
-    Apass = 1;     % Passband Ripple (dB)
+    Apass = .1;     % Passband Ripple (dB)
 
     h = fdesign.highpass('n,fp,ast,ap', N, Fpass, Astop, Apass, Fs_d);
-    
     filterHP4 = design(h, 'ellip', ...
         'SystemObject', true);
+  
     Fs_d    = Fs/2;
     Fpass = Fs_d / 4;  % Passband Frequency
     h = fdesign.highpass('n,fp,ast,ap', N, Fpass, Astop, Apass, Fs_d);
@@ -113,6 +115,8 @@ if isempty(pllTracker1)
     
    
     envDet1 = EnvDetector;
+    envDet5 = EnvDetector;
+    envDet6 = EnvDetector;
     pllTracker1 = PLLClass(fCenter(1),Kd(1),PLLFs);
     setSampleRate(pllTracker1,PLLFs);
     pllTracker2 = PLLClass(fCenter(2),Kd(2),PLLFs);
@@ -134,10 +138,12 @@ if isempty(pllTracker1)
     setSampleRate(pllTracker8,PLLFs);
     
      
-    setSampleRate(envDet1,PLLFs);
-    setSampleRate(envDet2,PLLFs);
-    setSampleRate(envDet3,PLLFs);
-    setSampleRate(envDet4,PLLFs);
+    setSampleRate(envDet1,Fs);
+    setSampleRate(envDet2,Fs);
+    setSampleRate(envDet3,Fs);
+    setSampleRate(envDet4,Fs);
+    setSampleRate(envDet5,Fs);
+    setSampleRate(envDet6,Fs);
     
 end
 
@@ -193,57 +199,69 @@ if ~isempty(pllTracker1)
     
     x4 = step(filterHP4, x);
     xlp4 = step(filterLP4,x);
-   
+ 
     x3in = downsample(xlp4,2);
+    %x3in = xlp4;
     x3 = step(filterHP3, x3in);
     xlp3 = step(filterLP3,x3in);
     
+    
     x2in = downsample(xlp3,2);
+    %x2in = xlp3;
     x2 = step(filterHP2, x2in);
     xlp2 = step(filterLP2,x2in);
     
     x1in = downsample(xlp2,2);
+    %x1in = xlp2;
     x1 = step(filterHP1, x1in);
     %x2lp = step(filterLP1,x1in);
     
-    
-      
-  
+   
     
     x1 = step(SRC1,x1);
+   
     x2 = step(SRC2,x2);
+    
     x3 = step(SRC3,x3);
+   
     x4 = step(SRC4,x4);
-  
-     
-    x1 = step(envDet1,x1);
-    x2 = step(envDet2,x2);
-    x3 = step(envDet3,x3);
-    x4 = step(envDet4,x4);
+    
+    
+    
+    [x1, env1] = step(envDet1,x1);
+    [x2, env2] = step(envDet2,x2);
+    [x3, env3] = step(envDet3,x3);
+    [x4, env4] = step(envDet4,x4);
+    
+
+    
+    %x1 = step(envDet5,x1);
+    %x2 = step(envDet6,x2);
   
     
+    KdFactor = 1;
+    
     pllTracker1.fCenter = fCenter(1);
-    pllTracker1.Kd    = Kd(1);
+    pllTracker1.Kd    = Kd(1) * KdFactor;
     temp1 = step(pllTracker1,x1);
-    %pitch(:,1) = downsample(temp1,8);
     pitch(:,1) = temp1;
     %pitch(:,1) = step(fLP1,pitch(:,1));
     pllTracker2.fCenter = fCenter(2);
-    pllTracker2.Kd    = Kd(2);
+    pllTracker2.Kd    = Kd(2) * KdFactor;
     temp2 = step(pllTracker2,x1);
     pitch(:,2) = temp2;
     %pitch(:,2) = step(fLP2,pitch(:,2));
     
     
     pllTracker3.fCenter = fCenter(3);
-    pllTracker3.Kd    = Kd(3);
+    pllTracker3.Kd    = Kd(3) * KdFactor;
     temp3 = step(pllTracker3,x2);
     pitch(:,3) = temp3;
     %pitch(:,3) = downsample(temp3,2);
     %pitch(:,3) = step(fLP3,pitch(:,3));
     
     pllTracker4.fCenter = fCenter(4);
-    pllTracker4.Kd    = Kd(4);
+    pllTracker4.Kd    = Kd(4) * KdFactor;
     temp4 = step(pllTracker4,x2);
     pitch(:,4) = temp4;
     %pitch(:,4) = downsample(temp4,2);
