@@ -117,20 +117,20 @@ if isempty(pllTracker1)
     envDet1 = EnvDetector;
     envDet5 = EnvDetector;
     envDet6 = EnvDetector;
-    pllTracker1 = PLLClass(fCenter(1),Kd(1),PLLFs);
-    setSampleRate(pllTracker1,PLLFs);
-    pllTracker2 = PLLClass(fCenter(2),Kd(2),PLLFs);
-    setSampleRate(pllTracker2,PLLFs);
+    pllTracker1 = PLLClass(fCenter(1),Kd(1),PLLFs/8);
+    setSampleRate(pllTracker1,PLLFs/8);
+    pllTracker2 = PLLClass(fCenter(2),Kd(2),PLLFs/8);
+    setSampleRate(pllTracker2,PLLFs/8);
     envDet2 = EnvDetector;
-    pllTracker3 = PLLClass(fCenter(3),Kd(3),PLLFs);
-    setSampleRate(pllTracker3,PLLFs);
-    pllTracker4 = PLLClass(fCenter(4),Kd(4),PLLFs);
-    setSampleRate(pllTracker4,PLLFs);
+    pllTracker3 = PLLClass(fCenter(3),Kd(3),PLLFs/4);
+    setSampleRate(pllTracker3,PLLFs/4);
+    pllTracker4 = PLLClass(fCenter(4),Kd(4),PLLFs/4);
+    setSampleRate(pllTracker4,PLLFs/4);
     envDet3 = EnvDetector;
-    pllTracker5 = PLLClass(fCenter(5),Kd(5),PLLFs);
-    setSampleRate(pllTracker5,PLLFs);
-    pllTracker6 = PLLClass(fCenter(6),Kd(6),PLLFs);
-    setSampleRate(pllTracker6,PLLFs);
+    pllTracker5 = PLLClass(fCenter(5),Kd(5),PLLFs/2);
+    setSampleRate(pllTracker5,PLLFs/2);
+    pllTracker6 = PLLClass(fCenter(6),Kd(6),PLLFs/2);
+    setSampleRate(pllTracker6,PLLFs/2);
     envDet4 = EnvDetector;
     pllTracker7 = PLLClass(fCenter(7),Kd(7),PLLFs);
     setSampleRate(pllTracker7,PLLFs);
@@ -138,12 +138,10 @@ if isempty(pllTracker1)
     setSampleRate(pllTracker8,PLLFs);
     
      
-    setSampleRate(envDet1,Fs);
-    setSampleRate(envDet2,Fs);
-    setSampleRate(envDet3,Fs);
+    setSampleRate(envDet1,Fs/8);
+    setSampleRate(envDet2,Fs/4);
+    setSampleRate(envDet3,Fs/2);
     setSampleRate(envDet4,Fs);
-    setSampleRate(envDet5,Fs);
-    setSampleRate(envDet6,Fs);
     
 end
 
@@ -234,9 +232,6 @@ if ~isempty(pllTracker1)
     [x4, env4] = step(envDet4,x4);
     
 
-    
-    %x1 = step(envDet5,x1);
-    %x2 = step(envDet6,x2);
   
     
     KdFactor = 1;
